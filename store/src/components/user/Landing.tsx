@@ -68,6 +68,10 @@ function Landing() {
     );
   };
 
+  const clearCart = () => {
+    setCart([]); // Clear the cart
+  };
+
   const handleSearch = (searchTerm: string) => {
     if (!searchTerm) {
       setFilteredProducts(product); // If no search term, show all products
@@ -148,6 +152,7 @@ function Landing() {
               cart={cart}
               updateCartItemQuantity={updateCartItemQuantity}
               removeCartItem={removeCartItem}
+              clearCart={clearCart}
             />
 
             <ProductDialog

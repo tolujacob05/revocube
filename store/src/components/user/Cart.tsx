@@ -1,8 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Product } from "./Main";
 import Lottie from "react-lottie-player";
 import lottieJson from "@/assets/json/empty-state.json";
+import checkout from "@/assets/json/checkout.json";
 import { useLottieAnimation } from "@/lib/utils/lottie-animation";
+import { Link } from "react-router-dom";
 
 interface CartItem {
   product: Product;
@@ -13,21 +15,30 @@ interface CartProps {
   cart: CartItem[];
   updateCartItemQuantity: (productId: number, newQuantity: number) => void;
   removeCartItem: (productId: number) => void;
+  clearCart: () => void; // Add clearCart function to clear the cart in the parent
 }
 
 const Cart: React.FC<CartProps> = ({
   cart,
   updateCartItemQuantity,
   removeCartItem,
+  clearCart, // Receive the function to clear the cart
 }) => {
   const lottieRef = useRef(null);
   const { isPlaying, handleMouseEnter, handleMouseLeave } =
     useLottieAnimation(12000);
+  const [showPopover, setShowPopover] = useState(false);
 
   // Update cart in local storage
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
+
+  // Handle checkout and clear the cart
+  const handleCheckout = () => {
+    clearCart(); // Clear the cart by calling the clearCart function passed from parent
+    setShowPopover(true); // Show the popover
+  };
 
   return (
     <div className="flex flex-col items-center mt-8 md:mt-0 border border-white-300 bg-white-300 rounded-xl p-6 h-full">
@@ -47,7 +58,6 @@ const Cart: React.FC<CartProps> = ({
               ref={lottieRef}
               className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80"
             />
-
             <p className="text-gray-500">
               Your cart is empty. Add items to get started!
             </p>
@@ -109,7 +119,7 @@ const Cart: React.FC<CartProps> = ({
 
       {cart.length > 0 && (
         <div className="mt-4 border border-[#0A1853] bg-[#0A1853] p-4 rounded-full">
-          <button className="text-white">
+          <button onClick={handleCheckout} className="text-white">
             Checkout {cart.reduce((acc, item) => acc + item.quantity, 0)} items
             for $
             {cart
@@ -120,6 +130,39 @@ const Cart: React.FC<CartProps> = ({
               .toFixed(2)}
           </button>
         </div>
+      )}
+
+      {/* Popover */}
+      {showPopover && (
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-lg z-50 text-center">
+          <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <Lottie
+              loop={isPlaying}
+              animationData={checkout}
+              play={isPlaying}
+              ref={lottieRef}
+              className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80"
+            />
+            <p className="mb-4 text-gray-700">
+              Your order has been placed successfully!
+            </p>
+            <Link
+              to="/"
+              className="text-blue-500 underline hover:text-blue-700"
+              onClick={() => setShowPopover(false)}
+            >
+              Go back to Homepage
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {/* Overlay for popover */}
+      {showPopover && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setShowPopover(false)}
+        ></div>
       )}
     </div>
   );
