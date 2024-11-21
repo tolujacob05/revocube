@@ -60,7 +60,14 @@ const Cart: React.FC<CartProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center h-auto p-6 mt-8 border w-96 md:mt-0 border-white-300 bg-white-300 rounded-xl">
+    <div
+      className="flex flex-col items-center p-6 mt-8 transition-all duration-300 bg-white border w-96 md:mt-0 rounded-xl"
+      style={{
+        minHeight: cart.length === 0 ? "200px" : "auto", // Fixed height when cart is empty
+        maxHeight: "400px", // Maximum height to prevent overflow
+        overflowY: cart.length > 0 ? "auto" : "auto", // Scroll if items exceed max height
+      }}
+    >
       <h4 className="mb-4 text-xl font-semibold">Your Order</h4>
 
       {cart.length === 0 ? (

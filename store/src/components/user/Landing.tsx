@@ -144,7 +144,7 @@ function Landing() {
           <p>Order Again!</p>
 
           <div className="md:flex md:gap-4">
-            <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:gap-20">
+            <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
               {/* <article className="group"> */}
               {currentProducts.map((item) => (
                 <div
@@ -167,24 +167,24 @@ function Landing() {
               {/* </article> */}
             </div>
 
-            <div>
+            <div className="flex justify-end ">
               <Cart
                 cart={cart}
                 updateCartItemQuantity={updateCartItemQuantity}
                 removeCartItem={removeCartItem}
                 clearCart={clearCart}
               />
-
-              <ProductDialog
-                product={selectedProduct}
-                isDialogOpen={isDialogOpen}
-                setIsDialogOpen={setIsDialogOpen}
-                cart={cart}
-                setCart={setCart}
-                quantity={quantity}
-                setQuantity={setQuantity}
-              />
             </div>
+
+            <ProductDialog
+              product={selectedProduct}
+              isDialogOpen={isDialogOpen}
+              setIsDialogOpen={setIsDialogOpen}
+              cart={cart}
+              setCart={setCart}
+              quantity={quantity}
+              setQuantity={setQuantity}
+            />
           </div>
         </div>
 
