@@ -23,6 +23,10 @@ function Landing() {
     useState<{ product: Product; quantity: number }[]>(savedCart);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // Set number of items per page
+
   const fetchData = async () => {
     try {
       const response = await apiService.getAllProducts();
@@ -105,6 +109,20 @@ function Landing() {
     }
   };
 
+  // Calculate the products to display based on current page
+  const currentProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  // Calculate total number of pages
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  // Handle pagination
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="px-6 lg:px-40 space-y-20">
       <nav className="flex items-center justify-between">
@@ -127,7 +145,7 @@ function Landing() {
 
           <div className="md:flex md:gap-4">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-5 lg:gap-20">
-              {filteredProducts.map((item) => (
+              {currentProducts.map((item) => (
                 <div
                   key={item.id}
                   className="w-full space-y-4 cursor-pointer"
@@ -183,6 +201,27 @@ function Landing() {
               )
             )}
           </ul>
+        </div>
+
+        {/* Pagination Controls */}
+        <div className="flex items-center justify-center gap-4 mt-6">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+          >
+            Prev
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+          >
+            Next
+          </button>
         </div>
       </section>
       <ToastContainer /> {/* Add ToastContainer here to show toasts */}

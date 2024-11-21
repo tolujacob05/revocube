@@ -29,6 +29,10 @@ const Cart: React.FC<CartProps> = ({
     useLottieAnimation(12000);
   const [showPopover, setShowPopover] = useState(false);
 
+  // Pagination state
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+
   // Update cart in local storage
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -38,6 +42,21 @@ const Cart: React.FC<CartProps> = ({
   const handleCheckout = () => {
     clearCart(); // Clear the cart by calling the clearCart function passed from parent
     setShowPopover(true); // Show the popover
+  };
+
+  // Calculate the current page's items
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = cart.slice(startIndex, startIndex + itemsPerPage);
+
+  // Pagination controls
+  const totalPages = Math.ceil(cart.length / itemsPerPage);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
   return (
@@ -64,7 +83,7 @@ const Cart: React.FC<CartProps> = ({
           </div>
         </div>
       ) : (
-        cart.map((cartItem) => (
+        currentItems.map((cartItem) => (
           <div key={cartItem.product.id} className="w-full">
             <div className="flex justify-center space-x-28 mt-4">
               <div className="w-full">
@@ -131,6 +150,27 @@ const Cart: React.FC<CartProps> = ({
           </button>
         </div>
       )}
+
+      {/* Pagination Controls */}
+      <div className="flex justify-between w-full mt-4">
+        <button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          className="text-blue-500 disabled:text-gray-300"
+        >
+          Prev
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className="text-blue-500 disabled:text-gray-300"
+        >
+          Next
+        </button>
+      </div>
 
       {/* Popover */}
       {showPopover && (
