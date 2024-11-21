@@ -20,7 +20,7 @@ const Navbar: React.FC<SearchProps> = ({ onSearch }) => {
   };
   return (
     <>
-      <nav className="flex items-center gap-4 justify-between px-6 lg:px-40">
+      <nav className="flex items-center justify-between gap-4 px-6 lg:px-40">
         <div>
           <img src={Logo} alt="Logo" />
         </div>
@@ -36,7 +36,7 @@ const Navbar: React.FC<SearchProps> = ({ onSearch }) => {
           />
         </div>
 
-        <div className="flex flex-col md:flex md:flex-row items-center gap-2">
+        <div className="flex flex-col items-center gap-2 md:flex md:flex-row">
           <div className="flex items-center justify-center border border-[#2E3A6E] bg-[#2E3A6E] text-white rounded-full p-2 w-10 h-10">
             JK
           </div>

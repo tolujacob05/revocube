@@ -60,8 +60,8 @@ const Cart: React.FC<CartProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center mt-8 md:mt-0 border border-white-300 bg-white-300 rounded-xl p-6 h-full">
-      <h4 className="text-xl font-semibold mb-4">Your Order</h4>
+    <div className="flex flex-col items-center h-auto p-6 mt-8 border w-96 md:mt-0 border-white-300 bg-white-300 rounded-xl">
+      <h4 className="mb-4 text-xl font-semibold">Your Order</h4>
 
       {cart.length === 0 ? (
         <div className="flex flex-col items-center">
@@ -85,7 +85,7 @@ const Cart: React.FC<CartProps> = ({
       ) : (
         currentItems.map((cartItem) => (
           <div key={cartItem.product.id} className="w-full">
-            <div className="flex justify-center space-x-28 mt-4">
+            <div className="flex justify-center mt-4 space-x-28">
               <div className="w-full">
                 <div className="flex gap-2">
                   <p>{cartItem.quantity}x</p>
@@ -126,7 +126,7 @@ const Cart: React.FC<CartProps> = ({
                 </span>
                 <button
                   onClick={() => removeCartItem(cartItem.product.id)}
-                  className="underline text-red-500"
+                  className="text-red-500 underline"
                 >
                   remove
                 </button>
@@ -174,7 +174,7 @@ const Cart: React.FC<CartProps> = ({
 
       {/* Popover */}
       {showPopover && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-lg z-50 text-center">
+        <div className="fixed z-50 p-6 text-center transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg top-1/2 left-1/2">
           <div>
             <Checkout />
             <p className="mb-4 text-gray-700">
@@ -194,7 +194,7 @@ const Cart: React.FC<CartProps> = ({
       {/* Overlay for popover */}
       {showPopover && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          className="fixed inset-0 z-40 bg-black bg-opacity-50"
           onClick={() => setShowPopover(false)}
         ></div>
       )}

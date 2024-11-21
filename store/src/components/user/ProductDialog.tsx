@@ -69,18 +69,18 @@ const ProductDialog = ({
                 <img
                   src={product.image}
                   alt={product.title}
-                  className="w-[350px] object-cover rounded-md"
+                  className="w-full h-56 transition shadow-xl object-fit rounded-xl"
                 />
               </div>
-              <span className="mt-2 self-start">${product.price}</span>
+              <span className="self-start mt-2">${product.price}</span>
               <p className="mt-4">{product.description}</p>
 
               {/* Product Quantity Counter */}
               <div className="flex flex-col items-center">
-                <div className="mt-4 flex items-center gap-4">
+                <div className="flex items-center gap-4 mt-4">
                   <button
                     onClick={decreaseQuantity}
-                    className="bg-gray-200 p-2 rounded-full"
+                    className="p-2 bg-gray-200 rounded-full"
                     disabled={quantity <= 1}
                   >
                     -
@@ -88,7 +88,7 @@ const ProductDialog = ({
                   <span className="text-lg font-semibold">{quantity}</span>
                   <button
                     onClick={increaseQuantity}
-                    className="bg-gray-200 p-2 rounded-full"
+                    className="p-2 bg-gray-200 rounded-full"
                   >
                     +
                   </button>
