@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { Product } from "./Main";
 import Lottie from "react-lottie-player";
 import lottieJson from "@/assets/json/empty-state.json";
-import checkout from "@/assets/json/checkout.json";
 import { useLottieAnimation } from "@/lib/utils/lottie-animation";
 import { Link } from "react-router-dom";
+import Checkout from "./Checkout";
 
 interface CartItem {
   product: Product;
@@ -175,14 +175,8 @@ const Cart: React.FC<CartProps> = ({
       {/* Popover */}
       {showPopover && (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-lg z-50 text-center">
-          <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <Lottie
-              loop={isPlaying}
-              animationData={checkout}
-              play={isPlaying}
-              ref={lottieRef}
-              className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80"
-            />
+          <div>
+            <Checkout />
             <p className="mb-4 text-gray-700">
               Your order has been placed successfully!
             </p>
