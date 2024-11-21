@@ -124,13 +124,13 @@ function Landing() {
   };
 
   return (
-    <div className="px-6 lg:px-40 space-y-20">
+    <div className="px-6 space-y-20 lg:px-40">
       <nav className="flex items-center justify-between">
         <div>
           <img src={Logo} alt="Logo" />
         </div>
 
-        <div className="flex flex-col md:flex md:flex-row items-center gap-2">
+        <div className="flex flex-col items-center gap-2 md:flex md:flex-row">
           <div className="flex items-center justify-center border border-[#2E3A6E] bg-[#2E3A6E] text-white rounded-full p-2 w-10 h-10">
             JK
           </div>
@@ -144,48 +144,51 @@ function Landing() {
           <p>Order Again!</p>
 
           <div className="md:flex md:gap-4">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-5 lg:gap-20">
+            <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:gap-20">
+              {/* <article className="group"> */}
               {currentProducts.map((item) => (
                 <div
                   key={item.id}
-                  className="w-full space-y-4 cursor-pointer"
+                  className="space-y-4 cursor-pointer"
                   onClick={() => handleProductClick(item)}
                 >
-                  <div className="w-full">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover rounded-md lg:w-[250px]"
-                    />
-                  </div>
+                  <img
+                    alt={item.title}
+                    src={item.image}
+                    className="w-full h-56 transition shadow-xl object-fit rounded-xl"
+                  />
+
                   <div className="flex flex-col gap-2">
                     <p>{item.title}</p>
                     <span>${item.price}</span>
                   </div>
                 </div>
               ))}
+              {/* </article> */}
             </div>
 
-            <Cart
-              cart={cart}
-              updateCartItemQuantity={updateCartItemQuantity}
-              removeCartItem={removeCartItem}
-              clearCart={clearCart}
-            />
+            <div>
+              <Cart
+                cart={cart}
+                updateCartItemQuantity={updateCartItemQuantity}
+                removeCartItem={removeCartItem}
+                clearCart={clearCart}
+              />
 
-            <ProductDialog
-              product={selectedProduct}
-              isDialogOpen={isDialogOpen}
-              setIsDialogOpen={setIsDialogOpen}
-              cart={cart}
-              setCart={setCart}
-              quantity={quantity}
-              setQuantity={setQuantity}
-            />
+              <ProductDialog
+                product={selectedProduct}
+                isDialogOpen={isDialogOpen}
+                setIsDialogOpen={setIsDialogOpen}
+                cart={cart}
+                setCart={setCart}
+                quantity={quantity}
+                setQuantity={setQuantity}
+              />
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-col gap-10 items-center justify-center">
+        <div className="flex flex-col items-center justify-center gap-10">
           <h2>Categories</h2>
 
           <ul className="flex items-center justify-center gap-4 md:gap-10">
@@ -208,7 +211,7 @@ function Landing() {
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            className="px-4 py-2 text-white bg-blue-500 rounded-md"
           >
             Prev
           </button>
@@ -218,7 +221,7 @@ function Landing() {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            className="px-4 py-2 text-white bg-blue-500 rounded-md"
           >
             Next
           </button>

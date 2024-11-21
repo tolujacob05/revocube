@@ -159,7 +159,7 @@ function Main() {
   return (
     <>
       <Navbar onSearch={handleSearch} />
-      <section className="flex space-x-10 lg:space-x-20 px-6 lg:px-40">
+      <section className="flex px-6 space-x-10 lg:space-x-20 lg:px-40">
         <div className="space-y-8">
           <p>More Categories</p>
 
@@ -198,20 +198,19 @@ function Main() {
           <div className="space-y-16 md:pt-2">
             <h4>{selectedCategory ? selectedCategory : "All Products"}</h4>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-5 lg:gap-20">
+            <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:gap-20">
               {filteredProducts.map((item) => (
                 <div
                   key={item.id}
-                  className="w-full space-y-4 cursor-pointer"
+                  className="space-y-4 cursor-pointer"
                   onClick={() => handleProductClick(item)}
                 >
-                  <div className="w-full">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover rounded-md lg:w-[250px]"
-                    />
-                  </div>
+                  <img
+                    alt={item.title}
+                    src={item.image}
+                    className="w-full h-56 transition shadow-xl object-fit rounded-xl"
+                  />
+
                   <div className="flex flex-col gap-2">
                     <p>{item.title}</p>
                     <span>${item.price}</span>
@@ -220,25 +219,25 @@ function Main() {
               ))}
             </div>
           </div>
+
+          <ProductDialog
+            product={selectedProduct}
+            isDialogOpen={isDialogOpen}
+            setIsDialogOpen={setIsDialogOpen}
+            cart={cart}
+            setCart={setCart}
+            quantity={quantity}
+            setQuantity={setQuantity}
+          />
         </div>
       </section>
 
-      <div className="px-6 lg:px-40">
+      <div className="flex justify-end px-6 lg:px-40">
         <Cart
           cart={cart}
           updateCartItemQuantity={updateCartItemQuantity}
           removeCartItem={removeCartItem}
           clearCart={clearCart}
-        />
-
-        <ProductDialog
-          product={selectedProduct}
-          isDialogOpen={isDialogOpen}
-          setIsDialogOpen={setIsDialogOpen}
-          cart={cart}
-          setCart={setCart}
-          quantity={quantity}
-          setQuantity={setQuantity}
         />
       </div>
 
