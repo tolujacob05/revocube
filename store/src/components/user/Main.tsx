@@ -106,6 +106,10 @@ function Main() {
     );
   };
 
+  const clearCart = () => {
+    setCart([]); // Clear the cart
+  };
+
   const handleSearch = (searchTerm: string) => {
     if (!searchTerm) {
       // Show products for the selected category or all products
@@ -224,6 +228,7 @@ function Main() {
           cart={cart}
           updateCartItemQuantity={updateCartItemQuantity}
           removeCartItem={removeCartItem}
+          clearCart={clearCart}
         />
 
         <ProductDialog
