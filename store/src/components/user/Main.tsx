@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Breadcrumb,
@@ -38,6 +38,7 @@ function Main() {
   const [cart, setCart] =
     useState<{ product: Product; quantity: number }[]>(savedCart);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const cartSectionRef = useRef<HTMLDivElement>(null);
 
   // Fetch products on mount
   const fetchData = useCallback(async () => {
@@ -156,9 +157,19 @@ function Main() {
     }
   };
 
+  const handleCartClick = () => {
+    if (cartSectionRef.current) {
+      cartSectionRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <>
-      <Navbar onSearch={handleSearch} />
+      <Navbar
+        onSearch={handleSearch}
+        cart={cart}
+        handleCartClick={handleCartClick}
+      />
       <section className="flex px-6 space-x-10 lg:space-x-20 lg:px-40">
         <div className="space-y-8">
           <p>More Categories</p>
@@ -208,7 +219,7 @@ function Main() {
                   <img
                     alt={item.title}
                     src={item.image}
-                    className="w-full h-56 transition shadow-xl object-fit rounded-xl"
+                    className="w-full h-40 transition shadow-xl md:h-56 object-fit rounded-xl"
                   />
 
                   <div className="flex flex-col gap-2">
@@ -238,6 +249,7 @@ function Main() {
           updateCartItemQuantity={updateCartItemQuantity}
           removeCartItem={removeCartItem}
           clearCart={clearCart}
+          ref={cartSectionRef}
         />
       </div>
 
