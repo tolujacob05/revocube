@@ -60,6 +60,11 @@ function Landing() {
   }, []);
 
   const handleCategoryClick = (category: string) => {
+    // Scroll to the top of the page
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Smooth scrolling effect
+    });
     // Navigate to the Main component with the selected category in the URL
     navigate(`/category/${category}`);
   };
