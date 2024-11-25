@@ -14,6 +14,7 @@ import Cart from "./Cart";
 import ProductDialog from "./ProductDialog";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export type Product = {
   id: number;
@@ -39,9 +40,11 @@ function Main() {
     useState<{ product: Product; quantity: number }[]>(savedCart);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const cartSectionRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Fetch products on mount
   const fetchData = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await apiService.getAllProducts();
       setProduct(response);
@@ -54,6 +57,8 @@ function Main() {
       );
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }, [category]); // Dependencies include 'category'
 
@@ -209,26 +214,42 @@ function Main() {
           <div className="space-y-16 md:pt-2">
             <h4>{selectedCategory ? selectedCategory : "All Products"}</h4>
 
-            <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:gap-20">
-              {filteredProducts.map((item) => (
-                <div
-                  key={item.id}
-                  className="space-y-4 cursor-pointer"
-                  onClick={() => handleProductClick(item)}
-                >
-                  <img
-                    alt={item.title}
-                    src={item.image}
-                    className="w-full h-40 transition shadow-xl md:h-56 object-fit rounded-xl"
-                  />
-
-                  <div className="flex flex-col gap-2">
-                    <p>{item.title}</p>
-                    <span>${item.price}</span>
+            {loading ? (
+              // Display Skeletons while loading
+              <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:gap-20">
+                {[...Array(5)].map((_, index) => (
+                  <div className="flex flex-col space-y-3" key={index}>
+                    <Skeleton className="h-[125px] w-[100px] md:w-[250px] rounded-xl" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-[100px] md:w-[250px]" />
+                      <Skeleton className="h-4 w-[100px] md:w-[200px]" />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              // Display products once loaded
+              <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
+                {filteredProducts.map((item) => (
+                  <div
+                    key={item.id}
+                    className="space-y-4 cursor-pointer"
+                    onClick={() => handleProductClick(item)}
+                  >
+                    <img
+                      alt={item.title}
+                      src={item.image}
+                      className="w-full h-40 transition shadow-xl md:h-56 object-fit rounded-xl"
+                    />
+
+                    <div className="flex flex-col gap-2">
+                      <p>{item.title}</p>
+                      <span>${item.price}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <ProductDialog

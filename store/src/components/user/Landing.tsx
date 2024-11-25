@@ -19,11 +19,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Icon } from "@iconify/react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function Landing() {
   const [product, setProduct] = useState<Product[]>([]);
   const navigate = useNavigate(); // Hook for navigation
   const cartSectionRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -40,6 +42,7 @@ function Landing() {
   const itemsPerPage = 10; // Set number of items per page
 
   const fetchData = async () => {
+    setLoading(true); // Start loading
     try {
       const response = await apiService.getAllProducts();
       setProduct(response);
@@ -47,6 +50,8 @@ function Landing() {
       console.log(response);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -214,26 +219,42 @@ function Landing() {
           <p>Order Again!</p>
 
           <div className="md:flex md:gap-4">
-            <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
-              {currentProducts.map((item) => (
-                <div
-                  key={item.id}
-                  className="space-y-4 cursor-pointer"
-                  onClick={() => handleProductClick(item)}
-                >
-                  <img
-                    alt={item.title}
-                    src={item.image}
-                    className="w-full h-56 transition shadow-xl object-fit rounded-xl"
-                  />
-
-                  <div className="flex flex-col gap-2">
-                    <p>{item.title}</p>
-                    <span>${item.price}</span>
+            {loading ? (
+              // Display Skeletons while loading
+              <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
+                {[...Array(5)].map((_, index) => (
+                  <div className="flex flex-col space-y-3" key={index}>
+                    <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-[250px]" />
+                      <Skeleton className="h-4 w-[200px]" />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              // Display products once loaded
+              <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
+                {currentProducts.map((item) => (
+                  <div
+                    key={item.id}
+                    className="space-y-4 cursor-pointer"
+                    onClick={() => handleProductClick(item)}
+                  >
+                    <img
+                      alt={item.title}
+                      src={item.image}
+                      className="w-full h-56 transition shadow-xl object-fit rounded-xl"
+                    />
+
+                    <div className="flex flex-col gap-2">
+                      <p>{item.title}</p>
+                      <span>${item.price}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
             <div className="flex justify-end">
               <Cart
