@@ -21,7 +21,7 @@ const Search: React.FC<SearchProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center border-[#2E3A6E] bg-[#2E3A6E] rounded-3xl z-10 h-[350px]">
+    <div className="relative flex flex-col items-center justify-center border-[#2E3A6E] bg-[#2E3A6E] rounded-3xl h-[350px]">
       <div className="absolute bottom-0 left-0 w-[120px] md:w-[150px]">
         <img src={rect1} alt="" className="w-full h-full rounded-3xl" />
       </div>
